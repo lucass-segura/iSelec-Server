@@ -21,7 +21,7 @@ const db = mysql.createConnection({
     user: '7c9qz8wiy2bdmyib5tv3',
     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
     database: "iselec",
-    ssl: {
+    ssl: { 
         rejectUnauthorized: false
     }
 });
