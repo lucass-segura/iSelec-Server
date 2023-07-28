@@ -1,56 +1,33 @@
-const express = require("express") //require: Es una función global de Node.js que se utiliza para cargar módulos en una aplicación.
-// Permite incluir módulos escritos en otros archivos y hacerlos accesibles en el archivo actual
-const path = require('path');
+const express = require("express");
 const app = express();
-const mysql = require('mysql')
+const mysql = require('mysql');
 const cors = require("cors");
-const fs = require('fs');
 
 app.use(cors());
-app.use(express.json())
-
-
-
-
-// Configurar el middleware para servir archivos estáticos
-app.use('/images', express.static(path.join(__dirname, 'public/images/iphones')));
-app.use('/iphones', express.static(path.join(__dirname, 'public/iphones')));
+app.use(express.json());
 
 const db = mysql.createConnection({
     host: 'aws.connect.psdb.cloud',
     user: '7c9qz8wiy2bdmyib5tv3',
     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
     database: "iselec",
-    ssl: { 
+    ssl: {
         rejectUnauthorized: false
     }
 });
 
-
-
-
 app.post("/create", (req, res) => {
-    const nombre = req.body.nombre;
-    const descripcion = req.body.descripcion;
-    const precio = req.body.precio;
-    const img = req.body.img;
-    const idCategory = req.body.idCategory;
+    const { nombre, descripcion, precio, img, idCategory } = req.body;
+    const imageUrl = `https://server-iselec.onrender.com/iphones/${idCategory}/${img}.png`;
 
-
-
-    var _path = path.join(__dirname, "/iphones");
-    let pathParcial = '';
-        pathParcial = `https://server-iselec.onrender.com/iphones/${idCategory}/${img}.png`;
-
-    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send("dispositivo registrado con exito");
-            }
+    db.query("INSERT INTO dispositivo(nombre, descripcion, precio, img, idCategory) VALUES(?, ?, ?, ?, ?)", [nombre, descripcion, precio, imageUrl, idCategory], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error al crear el dispositivo.");
+        } else {
+            res.send("Dispositivo registrado con éxito");
         }
-    );
+    });
 });
 
 
