@@ -38,21 +38,9 @@ app.post("/create", (req, res) => {
 
 
 
-    var _path = path.join(__dirname, "public/iphones");
-    var base64Data = img.replace("data:image/png;base64,", "");
-
+    var _path = path.join(__dirname, "/iphones");
     let pathParcial = '';
-
-        var _nombre = nombre.replace(' ', '_');
-        console.log(_nombre)
-        console.log(pathParcial)
-        pathParcial = `/${idCategory}/yellow.png`;
-
-        _path = path.join(_path, pathParcial);
-
-        fs.writeFile(_path, base64Data, 'base64', function (err) {
-            console.log(err);
-        });
+        pathParcial = `/iphones/${idCategory}/${img}.png`;
 
     db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
         (err, result) => {
