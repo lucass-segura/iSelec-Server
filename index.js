@@ -38,7 +38,7 @@ app.post("/create", (req, res) => {
 
 
 
-    var _path = path.join(__dirname, "public/images/iphones");
+    var _path = path.join(__dirname, "public/iphones");
     var base64Data = img.replace("data:image/png;base64,", "");
 
     let pathParcial = '';
@@ -46,7 +46,7 @@ app.post("/create", (req, res) => {
         var _nombre = nombre.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
-        pathParcial = `/${idCategory}/${img}.png`;
+        pathParcial = `/${idCategory}/yellow.png`;
 
         _path = path.join(_path, pathParcial);
 
