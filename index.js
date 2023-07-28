@@ -46,10 +46,7 @@ app.post("/create", (req, res) => {
         var _nombre = nombre.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
-        pathParcial = `/${_nombre}/${_nombre}.png`;
-        fs.mkdir(_path+'\\'+_nombre,(err)=>{
-            console.log('error al crear directorio' , err)
-        })
+        pathParcial = `/${idCategory}/${img}.png`;
 
         _path = path.join(_path, pathParcial);
 
