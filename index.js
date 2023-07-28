@@ -40,7 +40,7 @@ app.post("/create", (req, res) => {
 
     var _path = path.join(__dirname, "/iphones");
     let pathParcial = '';
-        pathParcial = `/iphones/${idCategory}/${img}.png`;
+        pathParcial = `https://server-iselec.onrender.com/iphones/${idCategory}/${img}.png`;
 
     db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
         (err, result) => {
