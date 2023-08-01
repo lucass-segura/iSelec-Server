@@ -112,6 +112,35 @@ app.put("/update", (req, res) => {
 });
 
 
+// Agrega una ruta para el inicio de sesión
+app.post("/login", (req, res) => {
+    const { user, password } = req.body;
+  
+    // Realiza la validación de inicio de sesión en la base de datos
+    db.query("SELECT * FROM user WHERE user = ? AND password = ?", [user, password],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send("Error al intentar iniciar sesión.");
+        } else {
+          // Verifica si se encontró un usuario con el nombre de usuario y contraseña proporcionados
+          if (result.length > 0) {
+            res.json({
+              success: true,
+              message: "Inicio de sesión exitoso",
+            });
+          } else {
+            res.json({
+              success: false,
+              message: "Credenciales inválidas",
+            });
+          }
+        }
+      }
+    );
+  });
+
+
 
 //FUNCION QUE SIRVE PARA TRAERME TODOS LOS DISPOSITIVOS
 app.get("/dispositivos", (req, res) => {
