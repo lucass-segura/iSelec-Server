@@ -35,6 +35,7 @@ app.post("/create", (req, res) => {
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
+    const color = req.body.color;
 
 
 
@@ -57,7 +58,7 @@ app.post("/create", (req, res) => {
             console.log(err);
         });
 
-    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
+    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory,color) VALUES(?,?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory,color],
         (err, result) => {
             if (err) {
                 console.log(err);
