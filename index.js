@@ -22,7 +22,7 @@ const db = mysql.createConnection({
     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
     database: "iselec",
     ssl: { 
-        rejectUnauthorized: false
+       rejectUnauthorized: false
     }
 });
 
@@ -36,6 +36,7 @@ app.post("/create", (req, res) => {
     const img = req.body.img;
     const idCategory = req.body.idCategory;
     const color = req.body.color;
+    const nombreCompleto = req.body.nombreCompleto;
 
 
 
@@ -58,7 +59,7 @@ app.post("/create", (req, res) => {
             console.log(err);
         });
 
-    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory,color) VALUES(?,?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory,color],
+    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory,color,nombreCompleto) VALUES(?,?,?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory,color,nombreCompleto],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -78,7 +79,8 @@ app.put("/update", (req, res) => {
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
-
+    const color = req.body.color;
+    const nombreCompleto = req.body.nombreCompleto;
 
 
 
@@ -101,7 +103,7 @@ app.put("/update", (req, res) => {
             console.log(err);
         });
 
-    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id],
+    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=?, color=?, nombreCompleto=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id, color, nombreCompleto],
         (err, result) => {
             if (err) {
                 console.log(err);
