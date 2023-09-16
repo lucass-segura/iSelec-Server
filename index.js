@@ -45,7 +45,7 @@ app.post("/create", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombre.replace(' ', '_');
+        var _nombre = nombreCompleto.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
         pathParcial = `/${_nombre}/${_nombre}.png`;
@@ -89,7 +89,7 @@ app.put("/update", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombre.replace(' ', '_');
+        var _nombre = nombreCompleto.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
         pathParcial = `/${_nombre}/${_nombre}.png`;
