@@ -103,7 +103,7 @@ app.put("/update", (req, res) => {
             console.log(err);
         });
 
-    db.query("UPDATE dispositivo SET nombreCompleto=?, descripcion=? ,precio=?,img=?, idCategory=?, color=?, nombre=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id, color, nombreCompleto],
+    db.query("UPDATE dispositivo SET nombreCompleto=?, descripcion=? ,precio=?,img=?, idCategory=?, color=?, nombre=? WHERE id=?", [nombreCompleto, descripcion, precio, pathParcial, idCategory, id, color, nombre],
         (err, result) => {
             if (err) {
                 console.log(err);
