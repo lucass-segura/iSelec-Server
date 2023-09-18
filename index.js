@@ -10,19 +10,19 @@ app.use(cors());
 app.use(express.json())
 
 
-
+ 
 
 // Configurar el middleware para servir archivos estáticos
 app.use('/images', express.static(path.join(__dirname, 'public/images/iphones')));
 app.use('/iphones', express.static(path.join(__dirname, 'public/iphones')));
-
+  
 const db = mysql.createConnection({
     host: 'aws.connect.psdb.cloud',
     user: '7c9qz8wiy2bdmyib5tv3',
     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
     database: "iselec",
     ssl: { 
-       rejectUnauthorized: false
+        rejectUnauthorized: false
     }
 });
 
@@ -35,8 +35,6 @@ app.post("/create", (req, res) => {
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
-    const color = req.body.color;
-    const nombreCompleto = req.body.nombreCompleto;
 
 
 
@@ -45,7 +43,7 @@ app.post("/create", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombreCompleto.replace(' ', '_');
+        var _nombre = nombre.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
         pathParcial = `/${_nombre}/${_nombre}.png`;
@@ -59,7 +57,7 @@ app.post("/create", (req, res) => {
             console.log(err);
         });
 
-    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory,color,nombreCompleto) VALUES(?,?,?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory,color,nombreCompleto],
+    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -79,8 +77,7 @@ app.put("/update", (req, res) => {
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
-    const color = req.body.color;
-    const nombreCompleto = req.body.nombreCompleto;
+
 
 
 
@@ -89,7 +86,7 @@ app.put("/update", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombreCompleto.replace(' ', '_');
+        var _nombre = nombre.replace(' ', '_');
         console.log(_nombre)
         console.log(pathParcial)
         pathParcial = `/${_nombre}/${_nombre}.png`;
@@ -103,7 +100,7 @@ app.put("/update", (req, res) => {
             console.log(err);
         });
 
-    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=?, color=?, nombreCompleto=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, color, nombreCompleto, id],
+    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id],
         (err, result) => {
             if (err) {
                 console.log(err);
