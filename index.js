@@ -10,20 +10,28 @@ app.use(cors());
 app.use(express.json())
 
 
- 
+
 
 // Configurar el middleware para servir archivos estáticos
 app.use('/images', express.static(path.join(__dirname, 'public/images/iphones')));
 app.use('/iphones', express.static(path.join(__dirname, 'public/iphones')));
-  
+
+// const db = mysql.createConnection({
+//     host: 'aws.connect.psdb.cloud',
+//     user: '7c9qz8wiy2bdmyib5tv3',
+//     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
+//     database: "iselec",
+//     ssl: {
+//         rejectUnauthorized: false
+//     }
+// });
+
+
 const db = mysql.createConnection({
-    host: 'aws.connect.psdb.cloud',
-    user: '7c9qz8wiy2bdmyib5tv3',
-    password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
+    host: 'localhost',
+    user: 'root',
+    password: 'agunic1004',
     database: "iselec",
-    ssl: { 
-        rejectUnauthorized: false
-    }
 });
 
 
@@ -43,19 +51,19 @@ app.post("/create", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombre.replace(' ', '_');
-        console.log(_nombre)
-        console.log(pathParcial)
-        pathParcial = `/${_nombre}/${_nombre}.png`;
-        fs.mkdir(_path+'\\'+_nombre,(err)=>{
-            console.log('error al crear directorio' , err)
-        })
+    var _nombre = nombre.replace(' ', '_');
+    console.log(_nombre)
+    console.log(pathParcial)
+    pathParcial = `/${_nombre}/${_nombre}.png`;
+    fs.mkdir(_path + '\\' + _nombre, (err) => {
+        console.log('error al crear directorio', err)
+    })
 
-        _path = path.join(_path, pathParcial);
+    _path = path.join(_path, pathParcial);
 
-        fs.writeFile(_path, base64Data, 'base64', function (err) {
-            console.log(err);
-        });
+    fs.writeFile(_path, base64Data, 'base64', function (err) {
+        console.log(err);
+    });
 
     db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
         (err, result) => {
@@ -86,19 +94,19 @@ app.put("/update", (req, res) => {
 
     let pathParcial = '';
 
-        var _nombre = nombre.replace(' ', '_');
-        console.log(_nombre)
-        console.log(pathParcial)
-        pathParcial = `/${_nombre}/${_nombre}.png`;
-        fs.mkdir(_path+'\\'+_nombre,(err)=>{
-            console.log('error al crear directorio' , err)
-        })
+    var _nombre = nombre.replace(' ', '_');
+    console.log(_nombre)
+    console.log(pathParcial)
+    pathParcial = `/${_nombre}/${_nombre}.png`;
+    fs.mkdir(_path + '\\' + _nombre, (err) => {
+        console.log('error al crear directorio', err)
+    })
 
-        _path = path.join(_path, pathParcial);
+    _path = path.join(_path, pathParcial);
 
-        fs.writeFile(_path, base64Data, 'base64', function (err) {
-            console.log(err);
-        });
+    fs.writeFile(_path, base64Data, 'base64', function (err) {
+        console.log(err);
+    });
 
     db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id],
         (err, result) => {
@@ -115,29 +123,29 @@ app.put("/update", (req, res) => {
 //INICIO DE SESION
 app.post("/login", (req, res) => {
     const { user, password } = req.body;
-  
+
     db.query("SELECT * FROM user WHERE user = ? AND password = ?", [user, password],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send("Error al intentar iniciar sesión.");
-        } else {
-          //Verifica si se encontro el nombre de usuario y contraseña
-          if (result.length > 0) {
-            res.json({
-              success: true,
-              message: "Inicio de sesión exitoso",
-            });
-          } else {
-            res.json({
-              success: false,
-              message: "Credenciales inválidas",
-            });
-          }
+        (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send("Error al intentar iniciar sesión.");
+            } else {
+                //Verifica si se encontro el nombre de usuario y contraseña
+                if (result.length > 0) {
+                    res.json({
+                        success: true,
+                        message: "Inicio de sesión exitoso",
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        message: "Credenciales inválidas",
+                    });
+                }
+            }
         }
-      }
     );
-  });
+});
 
 
 
@@ -225,6 +233,64 @@ app.get("/dispositivo/:id", (req, res) => {
             } else {
                 console.log(result); // Imprimir los datos recibidos por ID en la consola
                 res.send(result);
+            }
+        }
+    );
+});
+
+
+
+
+// testimonials
+
+
+app.post("/createTestimonials", (req, res) => {
+    const message = req.body.message;
+    const name = req.body.name;
+    const numberStars = req.body.numberStars;
+
+    console.log(message);
+    console.log(name);
+    console.log(numberStars);
+
+    db.query("INSERT INTO testimonials(message,numberStars,name) VALUES(?,?,?)", [message, numberStars, name],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("testimonials registrado con exito");
+            }
+        }
+    );
+})
+
+
+
+
+app.get("/testimonials", (req, res) => {
+
+    db.query("SELECT * FROM testimonials",
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send(result);
+            }
+        }
+    );
+});
+
+
+
+app.delete("/deleteTestimonials/:idtestimonials", (req, res) => {
+    const id = req.params.idtestimonials;
+
+    db.query("DELETE FROM testimonials WHERE idtestimonials=?", [id],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Testimonio eliminado");
             }
         }
     );
