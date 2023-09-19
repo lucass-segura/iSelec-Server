@@ -16,23 +16,23 @@ app.use(express.json())
 app.use('/images', express.static(path.join(__dirname, 'public/images/iphones')));
 app.use('/iphones', express.static(path.join(__dirname, 'public/iphones')));
 
-// const db = mysql.createConnection({
-//     host: 'aws.connect.psdb.cloud',
-//     user: '7c9qz8wiy2bdmyib5tv3',
-//     password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
-//     database: "iselec",
-//     ssl: {
-//         rejectUnauthorized: false
-//     }
-// });
-
-
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'agunic1004',
+    host: 'aws.connect.psdb.cloud',
+    user: '7c9qz8wiy2bdmyib5tv3',
+    password: 'pscale_pw_HRP19IxfnqYMLAny1kgJr7THAC4POMXR077hUIlSAkm',
     database: "iselec",
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
+
+
+// const db = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'agunic1004',
+//     database: "iselec",
+// });
 
 
 
