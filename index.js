@@ -266,6 +266,26 @@ app.post("/createTestimonials", (req, res) => {
 
 
 
+app.put("/createTestimonialsAnswer", (req, res) => {
+    const idtestimonials = req.body.idtestimonials;
+    const answer = req.body.answer;
+    const message = req.body.message;
+    const name = req.body.name;
+    const numberStars = req.body.numberStars;
+
+    db.query("UPDATE testimonials SET message=?,numberStars=?,name=?,answer=? WHERE idtestimonials=?", [message, numberStars, name, answer, idtestimonials],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("testimonials registrado con exito");
+            }
+        }
+    );
+})
+
+
+
 
 app.get("/testimonials", (req, res) => {
 
