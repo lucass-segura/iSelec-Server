@@ -8,7 +8,7 @@ const fs = require('fs');
 
 
 const corsOptions = {
-    origin: 'https://iselec.ar', // Reemplaza con el origen correcto
+    origin: '*', // Reemplaza con el origen correcto
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Especifica los métodos permitidos
     credentials: true, // Habilita el uso de cookies y credenciales (si es necesario)
     optionsSuccessStatus: 204, // Establece el código de estado para las preflight OPTIONS
