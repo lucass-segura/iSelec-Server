@@ -1,5 +1,4 @@
-const express = require("express") //require: Es una función global de Node.js que se utiliza para cargar módulos en una aplicación.
-// Permite incluir módulos escritos en otros archivos y hacerlos accesibles en el archivo actual
+const express = require("express");
 const path = require('path');
 const app = express();
 const mysql = require('mysql')
@@ -8,23 +7,20 @@ const fs = require('fs');
 
 
 const corsOptions = {
-    origin: '*', // Reemplaza con el origen correcto
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Especifica los métodos permitidos
-    credentials: true, // Habilita el uso de cookies y credenciales (si es necesario)
-    optionsSuccessStatus: 204, // Establece el código de estado para las preflight OPTIONS
+    origin: '*', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+    credentials: true, 
+    optionsSuccessStatus: 204,
 };
 
 
 
 app.use(cors(corsOptions));
 app.use(express.json())
-
-
-
-
-// Configurar el middleware para servir archivos estáticos
 app.use('/images', express.static(path.join(__dirname, 'public/images/iphones')));
 app.use('/iphones', express.static(path.join(__dirname, 'public/iphones')));
+
+
 
 const db = mysql.createConnection({
     host: 'aws.connect.psdb.cloud',
@@ -37,22 +33,14 @@ const db = mysql.createConnection({
 });
 
 
-// const db = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'agunic1004',
-//     database: "iselec",
-// });
-
-
-
-
 app.post("/create", (req, res) => {
     const nombre = req.body.nombre;
     const descripcion = req.body.descripcion;
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
+    const color = req.body.color;
+    const nombreCompleto = req.body.nombreCompleto;
 
 
 
@@ -61,7 +49,7 @@ app.post("/create", (req, res) => {
 
     let pathParcial = '';
 
-    var _nombre = nombre.replace(' ', '_');
+    var _nombre = nombreCompleto.replace(' ', '_');
     console.log(_nombre)
     console.log(pathParcial)
     pathParcial = `/${_nombre}/${_nombre}.png`;
@@ -69,14 +57,13 @@ app.post("/create", (req, res) => {
         console.log('error al crear directorio', err)
     })
 
-    _path = path.join(_path, pathParcial);
+    _path = path.join(_path, pathParcial);  
 
     fs.writeFile(_path, base64Data, 'base64', function (err) {
         console.log(err);
     });
 
-    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory) VALUES(?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory],
-        (err, result) => {
+    db.query("INSERT INTO dispositivo(nombre,descripcion,precio,img,idCategory,color,nombreCompleto) VALUES(?,?,?,?,?,?,?)", [nombre, descripcion, precio, pathParcial, idCategory,color,nombreCompleto],        (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -95,7 +82,8 @@ app.put("/update", (req, res) => {
     const precio = req.body.precio;
     const img = req.body.img;
     const idCategory = req.body.idCategory;
-
+    const color = req.body.color;
+    const nombreCompleto = req.body.nombreCompleto;
 
 
 
@@ -104,7 +92,7 @@ app.put("/update", (req, res) => {
 
     let pathParcial = '';
 
-    var _nombre = nombre.replace(' ', '_');
+    var _nombre = nombreCompleto.replace(' ', '_');
     console.log(_nombre)
     console.log(pathParcial)
     pathParcial = `/${_nombre}/${_nombre}.png`;
@@ -118,8 +106,7 @@ app.put("/update", (req, res) => {
         console.log(err);
     });
 
-    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, id],
-        (err, result) => {
+    db.query("UPDATE dispositivo SET nombre=?, descripcion=? ,precio=?,img=?, idCategory=?, color=?, nombreCompleto=? WHERE id=?", [nombre, descripcion, precio, pathParcial, idCategory, color, nombreCompleto, id],        (err, result) => {
             if (err) {
                 console.log(err);
             } else {
